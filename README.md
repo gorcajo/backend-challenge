@@ -1,3 +1,7 @@
+# MOVO Backend Challenge
+
+## 1. Specifications
+
 Besides providing exceptional transportation services, Cabify also runs a physical store which sells 3 products:
 
 ```
@@ -58,3 +62,29 @@ Examples:
 - Be easy to grow and easy to add new functionality.
 - Have notes attached, explaining the solution and why certain things are included and others are left out.
 - It must not contain executable or object files. Just source files, documentation and data files are allowed.
+
+## 2. Documentation
+
+### 2.1. Data persistence
+
+I've decided to use an in-memory H2 database. Its console can be accessed by the following URL:
+
+    http://localhost:8080/h2-console
+
+Login data:
+- *URL*: `jdbc:h2:mem:backendchallenge`
+- *Username*: `backendchallenge`
+- *Password*: (no pasword)
+
+It has three tables:
+
+    baskets
+    products_in_baskets
+    products
+  
+### 2.2. Endpoints
+
+    POST /api/v1/basket/{id}
+    PUT /api/v1/basket/{id}
+    GET /api/v1/basket/{id}/totalamount
+    DELETE /api/v1/basket/{id}

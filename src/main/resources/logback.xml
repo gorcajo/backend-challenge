@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<configuration>
+	<root level="DEBUG" />
+    
+    <!-- The only appender -->
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-5level | %date{ISO8601} | %-25thread | %-30(%class{0}:%line) | %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+    <!-- Our application log messages -->
+
+	<logger name="com.guillermoorcajo.backendchallenge"
+		level="DEBUG">
+		<appender-ref ref="stdout" />
+	</logger>
+	
+    <!-- The Spring log messages -->
+
+	<logger name="org.springframework" level="INFO">
+		<appender-ref ref="stdout" />
+	</logger>
+
+    <!-- This is for Spring to log SQL queries -->
+
+	<logger name="org.springframework.jdbc.core.JdbcTemplate">
+		<level value="DEBUG" />
+	</logger>
+
+	<logger name="org.springframework.jdbc.core.StatementCreatorUtils">
+		<level value="TRACE" />
+	</logger>
+</configuration>

@@ -1,0 +1,27 @@
+.header {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 2em;
+}
+
+.content {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.product-header {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.product-amount {
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.basket-amount {
+    font-weight: bold;
+    font-size: 3em;
+    text-align: center;
+}
