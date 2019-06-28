@@ -66,18 +66,19 @@ Also, it has the view `view_baskets` to query baskets contents easily.
 If anyone (marketing department or the CFO) wants to change prices, product names or discounts, its very easy to make a query to the database to do so (maybe with further development to expose that functionality in an admin section into the webpage).
 
 About the baskets:
+
 - They never expire. To clear old baskets an automated job could use `baskets.last_accessed` to decide which baskets need to ve removed.
 - They are public but identified an UUIDs; not knowing the UUID means it is impossible to access it in practice.
 
-You can find more about the schema at `src/main/resources.data.sql`.
+Notes:
 
-The database console is disabled by default since this is production code.
-
-Note: I've used JdbcTemplate instead of Hibernate to implement the data access object, but that class could be changed at any time to use another one to access the data.
+- I've used JdbcTemplate instead of Hibernate to implement the data access object, but that class could be changed at any time to use another one to access the data.
+- You can find more about the schema at `src/main/resources/data.sql`.
+- The database console is disabled by default since this is production code.
 
 ### 1.4. Endpoints
 
-The endoints are all under the path `/api/v1/`. In that way, any other endpoint design can coexist with previous versions at the same time. 
+All ndoints are in the form `/api/v1/*`, so any other endpoint design can coexist with previous versions at the same time. 
 
 The following four endpoints were implemented:
 
@@ -127,6 +128,6 @@ It is completely decoupled from the backend: only static files were used (HTML/C
 
 Limitations:
 - I've not implemented any sort of session, login or user management. Like real ecommerce webpages, you can fill your basket without being logged in.
-- It has some data hard-coded, like the products. I've focused in the backend functionalities asked, and retrieve the products from the server to show them into the frontend requires another endpoint.
+- It has some data hard-coded, like the products. I've focused in the backend functionalities asked (retrieve the products from the server would require another endpoint).
 
 One possible improvement could be to use React (or another component-based frontend framework).
