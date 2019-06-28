@@ -1,12 +1,18 @@
 .header {
-    margin-left: 17.5%;
-    margin-right: 17.5%;
+    margin-top: 2em;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
     margin-bottom: 2em;
 }
 
 .content {
-    margin-left: 17.5%;
-    margin-right: 17.5%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+}
+
+.section-header {
+    font-weight: bold;
+    font-size: 1.5em;
 }
 
 .product-header {
