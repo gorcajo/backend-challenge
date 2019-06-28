@@ -72,13 +72,13 @@ About the baskets:
 
 Notes:
 
-- I've used JdbcTemplate instead of Hibernate to implement the data access object, but that class could be changed at any time to use another one to access the data.
+- I've used JdbcTemplate instead of Hibernate (a Java ORM) to implement the data access object, but that class could be changed at any time to use another one to access the data.
 - You can find more about the schema at `src/main/resources/data.sql`.
 - The database console is disabled by default since this is production code.
 
 ### 1.4. Endpoints
 
-All ndoints are in the form `/api/v1/*`, so any other endpoint design can coexist with previous versions at the same time. 
+All endoints are in the form of `/api/v1/*`, so any other endpoint design can coexist with previous versions at the same time. 
 
 The following four endpoints were implemented:
 
@@ -110,21 +110,19 @@ Each log line contains:
 - Class and line (from the source code)
 - Log message
 
-Can be customized by editing `src/main/resources/logback.xml`. The default log level is DEBUG, depending of the environment (preproduction, production...) it could be set to INFO instead of DEBUG.
+By default it logs to a time-based rolling file, `/tmp/backend-challenge.log`. The default log level is DEBUG, depending of the environment (preproduction, production...) it could be set to INFO instead of DEBUG. The logging configuration is done by editing `src/main/resources/logback.xml`.
   
 ### 1.6. Unit tests
 
 I considered that the only unit test this application needed was `com.guillermoorcajo.backendchallenge.unittests.BasketServiceV1Test`.
 
-The tests can be more exhaustive, but for this code challenge I think that's enough (I didn't followed TDD). I've used JUnit for the test itself and Mckito to isolate the class under test and mock its dependencies.
+The tests can be more exhaustive, but for this code challenge I think that's enough (I didn't followed TDD). I've used JUnit for the test itself and Mockito to isolate the class under test and inject it mocked dependencies.
 
 ## 2. Frontend
 
-The frontend is served from the application itself, and the only page is `app.html`. If you run the app it in localhost at the port 8080 the URL would be `http://localhost:8080/app.html`.
+I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS, all of that served from the application itself. The only page is `app.html`, if you run the app in localhost at port 8080 the URL would be `http://localhost:8080/app.html`.
 
-I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
-
-It is completely decoupled from the backend: only static files were used (HTML/CSS/JS) with no template engine or any other server-side manipulation; the communication with the server is done only by AJAX calls. In this way, it's very easy to substitute the frontend with a better one (the frontend team's job? :) ).
+It's fully decoupled from the backend: only static files were used (HTML/CSS/JS) with no template engine or any other server-side manipulation; the communication with the server is done only by AJAX calls. In this way, it's very easy to substitute the frontend with a better one (the frontend team's job? :) ).
 
 Limitations:
 - I've not implemented any sort of session, login or user management. Like real ecommerce webpages, you can fill your basket without being logged in.
