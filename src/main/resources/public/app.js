@@ -36,7 +36,7 @@ GLOB = {
 					document.getElementById("total-amount").innerHTML = "0 €";
 				}
 				else {
-					GLOB.createNewBasket();
+					alert("HTTP " + this.status);
 				}
 			}
 		};
