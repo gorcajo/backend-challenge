@@ -24,28 +24,28 @@ The server runs at port 8080 by default, but can be configured through `src/main
 
 Following the Spring philosofy, the application was designed using the 3-layer architecture ad MVC design pattern.
 
-And talking about concurrency, two aspects can be considered:
+Talking about concurrency, two aspects have to be considered:
 
-- The application has an embedded Tomcat, which manages multiple users doing requests concurrenctly
-- The application has an embedded H2 database, so data persistance is ensured in a concurrent way
+- The application has an embedded Tomcat, which manages multiple users doing requests concurrently.
+- The application has an embedded H2 database, so data persistance is ensured in a concurrent way.
 
 Both embedded Tomcat and H2 database could be removed from the application and deploy a WAR to an external Tomcat container or switch to an external DBA in any moment. The code is flexible enough to do those changes painlessly.
 
 The code is structured as follows:
 
-- Class `Application`: the entray point to the application.
-- Package `com.guillermoorcajo.backendchallenge.pl`: Here goes all the classes related to the exposed endpoints; it's the Presentation Layer (PL).
-- Package `com.guillermoorcajo.backendchallenge.bll`: Contains the application business logic, like for example the algorithms wich calculates basket amounts and its discounts; it's the Business Logic Layer (BLL).
-- Package `com.guillermoorcajo.backendchallenge.dal`: All classes dedicated to access the database are into this package; it's the Data Access Layer (DAL).
+- Class `Application`: the entry point to the application.
+- Package `com.guillermoorcajo.backendchallenge.pl`: Conforms the Presentation Layer (PL). Here goes all the classes related to the exposed endpoints.
+- Package `com.guillermoorcajo.backendchallenge.bll`: Conforms the Business Logic Layer (BLL). Contains the application business logic, like for example the algorithms wich calculates basket amounts and its discounts.
+- Package `com.guillermoorcajo.backendchallenge.dal`: Conforms the Data Access Layer (DAL). All classes dedicated to access the database are into this package.
 - Package `com.guillermoorcajo.backendchallenge.dto`: Here goes all Data Transfer Objects (classes with no methods and all its fields public), which are the objects that both BLL and DAL layers move between each other to intercomunicate.
 - Package `com.guillermoorcajo.backendchallenge.enums`: All enums goes here, like ProductCode. 
-- Package `com.guillermoorcajo.backendchallenge.interceptors`: Package to store all classes which will intercept every request and response, for example to log the method/path of an URL and its source IP address. Here can be more classes for authentication in the future.
+- Package `com.guillermoorcajo.backendchallenge.interceptors`: Package to store all classes which will intercept every request and response, for example to log the method/path of an URL and its source IP address. In the future, there can be more interceptors, for authentication for example.
 
-Both BLL and DAL exposes interfaces to ensure that the upper layer will know which methods can be used (of course, its classes implements those interfaces). In this way, it's easy to modify the behavior of any business logic or data access details only changing an implementation class, but leaving the rest of the layers as they are.
+Both BLL and DAL exposes interfaces to ensure that the upper layer knows which methods can be used. So, it's easy to modify the behavior of any business logic or data access details only changing an implementation class and leaving the rest of the layers as they are.
 
 ### 1.3. Database
 
-I've decided to use an embedded H2 database, a very lightweight DBA written in Java. Also, it has compatibility modes (MySQL, PostgreSQL...) to ensure SQL dialect compatibility in case of a migration to any other DBA. For this test I did not used any specific SQL dialect besides H2.
+I've decided to use an embedded H2 database, a lightweight DBA written in Java. Also, it has compatibility modes (MySQL, PostgreSQL...) to ensure SQL dialect compatibility in case of a migration to any other DBA. For this test I did not used any specific SQL dialect besides H2.
 
 The DB is in memory mode, so every time the application is restarted, the data is wiped out and the schema is rebuilt from scratch. It would be easy to change to a file-based mode by a simple configuration line into `src/main/resources/application.properties` like:
 
@@ -56,16 +56,16 @@ I've created the following schema:
 - `baskets`: holds the references (UUIDs) for all the baskets.
 - `products`: holds all the products, with their codes, names and prices.
 - `products_in_baskets`: makes a many-to-many relationship between `baskets` and `products`, allowing baskets to actually contain products, (specifying the quantities too).
-- `pack_discounts`: rules for "buy 2 and get 1 free" discounts.
-- `bulk_discounts`: rules for "buy 3 or more and get a reduced price" discounts.
+- `pack_discounts`: rules for "buy 2 and get 1 free" type discounts.
+- `bulk_discounts`: rules for "buy 3 or more and get a reduced price" type discounts.
 
 Also, it has the view `view_baskets` to query baskets contents easily.
 
-If anyone (marketing department or the CFO) wants to change prices, product names or discounts, its very easy to make a query to the database to do so (maybe with further development to expose that functionality in an admin section into the webpage).
+If anyone (marketing department or the CFO) wants to change prices, product names or discounts, its very easy to make a query to the database to do so (maybe with further development to expose that at an admin section into the site).
 
 About the baskets:
-- They never expire. To clear old baskets an automated job could use `baskets.last_accessed` to decide which baskets need to ve removed.
-- They are public but identified an UUIDs; not knowing the UUID means it is impossible to access it in practice.
+- They never expire. To remove old and abandoned baskets an automated job could use `baskets.last_accessed` to decide which baskets need to be removed.
+- They are public but identified by unique UUIDs; not knowing the UUID means it is impossible to access it in practice.
 
 You can find more about the schema at `src/main/resources.data.sql`.
 
