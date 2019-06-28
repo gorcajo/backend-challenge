@@ -1,13 +1,11 @@
-.header {
-    margin-top: 2em;
+body {
     margin-left: 12.5%;
     margin-right: 12.5%;
-    margin-bottom: 2em;
 }
 
-.content {
-    margin-left: 12.5%;
-    margin-right: 12.5%;
+.header {
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .section-header {
