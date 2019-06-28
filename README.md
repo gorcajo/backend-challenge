@@ -117,7 +117,7 @@ The tests can be more exhaustive, but for this code challenge I think that's eno
 
 ## 2. Frontend
 
-The only page is `app.html` (if you run it in localhost, `http://localhost:8080/app.html`).
+The frontend is served from the application itself, and the only page is `app.html`. If you run the app it in localhost at the port 8080 the URL would be `http://localhost:8080/app.html`.
 
 For the frontend I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
 
