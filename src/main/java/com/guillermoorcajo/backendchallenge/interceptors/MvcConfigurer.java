@@ -13,6 +13,6 @@ public class MvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loggerInterceptor).addPathPatterns("/**/basket/**");
+        registry.addInterceptor(loggerInterceptor).addPathPatterns("/**");
     }
 }
