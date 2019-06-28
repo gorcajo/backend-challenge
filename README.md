@@ -4,11 +4,11 @@
 
 The project has been developed with the following technologies:
 
-- Java 8
+- Java8 (JRE is needed in your system)
 - Spring Boot
 - Embedded H2 database
 - Embedded Tomcat
-- Maven
+- Maven (needed in your system if you'll compile it, alongside with the JDK)
 
 To run you'll need the compiled JAR (it can be built using Maven with `mvn clean package`) and simply execute:
 
@@ -35,10 +35,10 @@ The code is structured as follows:
 
 - Class `Application`: the entray point to the application.
 - Package `com.guillermoorcajo.backendchallenge.pl`: Here goes all the classes related to the exposed endpoints; it's the Presentation Layer (PL).
-- Package `com.guillermoorcajo.backendchallenge.bll`: Here goes all the application business logic, like for example the algorithms wich calculates basket amounts and its discounts; it's the Business Logic Layer (BLL).
-- Package `com.guillermoorcajo.backendchallenge.dal`: Here goes all classes dedicated to access the database; it's the Data Access Layer (DAL).
+- Package `com.guillermoorcajo.backendchallenge.bll`: Contains the application business logic, like for example the algorithms wich calculates basket amounts and its discounts; it's the Business Logic Layer (BLL).
+- Package `com.guillermoorcajo.backendchallenge.dal`: All classes dedicated to access the database are into this package; it's the Data Access Layer (DAL).
 - Package `com.guillermoorcajo.backendchallenge.dto`: Here goes all Data Transfer Objects (classes with no methods and all its fields public), which are the objects that both BLL and DAL layers move between each other to intercomunicate.
-- Package `com.guillermoorcajo.backendchallenge.enums`: Here are simply the enums, like ProductCode. 
+- Package `com.guillermoorcajo.backendchallenge.enums`: All enums goes here, like ProductCode. 
 - Package `com.guillermoorcajo.backendchallenge.interceptors`: Package to store all classes which will intercept every request and response, for example to log the method/path of an URL and its source IP address. Here can be more classes for authentication in the future.
 
 Both BLL and DAL exposes interfaces to ensure that the upper layer will know which methods can be used (of course, its classes implements those interfaces). In this way, it's easy to modify the behavior of any business logic or data access details only changing an implementation class, but leaving the rest of the layers as they are.
@@ -113,7 +113,7 @@ Can be customized by editing `src/main/resources/logback.xml`. The default log l
 
 I considered that the only unit test this application needed was `com.guillermoorcajo.backendchallenge.unittests.BasketServiceV1Test`.
 
-The tests can be more exhaustive, but for this code challenge I think that's enough. I've used JUnit for the test itself and Mckito to isolate the class under test and mock its dependencies.
+The tests can be more exhaustive, but for this code challenge I think that's enough (I didn't followed TDD). I've used JUnit for the test itself and Mckito to isolate the class under test and mock its dependencies.
 
 ## 2. Frontend
 
@@ -125,6 +125,6 @@ It is completely decoupled from the backend: only static files were used (HTML/C
 
 Limitations:
 - I've not implemented any sort of session, login or user management. Like real ecommerce webpages, you can fill your basket without being logged in.
-- It has some data hard-coded, like the products. I've focused in the backend.
+- It has some data hard-coded, like the products. I've focused in the backend functionalities asked, and retrieve the products from the server to show them into the frontend requires another endpoint.
 
 One possible improvement could be to use React (or another component-based frontend framework).
