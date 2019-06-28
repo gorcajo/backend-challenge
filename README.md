@@ -8,7 +8,7 @@ The project has been developed with the following technologies:
 - Spring Boot
 - Embedded H2 database
 - Embedded Tomcat
-- Maven (needed in your system if you'll compile it, alongside with the JDK)
+- Maven (needed in your system if you''re going to compile it, alongside with the JDK)
 
 To run you'll need the compiled JAR (it can be built using Maven with `mvn clean package`) and simply execute:
 
