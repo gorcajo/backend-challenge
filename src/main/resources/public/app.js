@@ -30,8 +30,8 @@ GLOB = {
 		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
 		ajax.onreadystatechange = function() {
-			if (this.readyState == 4) {
-				if (this.status == 201) {
+			if (this.readyState === 4) {
+				if (this.status === 201) {
 					GLOB.basketId = this.responseText;
 					document.getElementById("total-amount").innerHTML = "0 €";
 				}
@@ -51,8 +51,8 @@ GLOB = {
 		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
 		ajax.onreadystatechange = function() {
-			if (this.readyState == 4) {
-				if (this.status == 204)
+			if (this.readyState === 4) {
+				if (this.status === 204)
 					GLOB.refreshTotalAmount(id);
 				else
 					GLOB.createNewBasket();
@@ -69,8 +69,8 @@ GLOB = {
 		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
 		ajax.onreadystatechange = function() {
-			if (this.readyState == 4) {
-				if (this.status == 200)
+			if (this.readyState === 4) {
+				if (this.status === 200)
 					document.getElementById("total-amount").innerHTML = parseFloat(this.responseText).toFixed(2) + " €";
 				else
 					GLOB.createNewBasket();
@@ -87,7 +87,7 @@ GLOB = {
 		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
 		ajax.onreadystatechange = function() {
-			if (this.readyState == 4)
+			if (this.readyState === 4)
 				GLOB.createNewBasket();
 		};
 
