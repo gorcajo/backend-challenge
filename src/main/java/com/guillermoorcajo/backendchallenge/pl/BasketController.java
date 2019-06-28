@@ -55,7 +55,7 @@ public class BasketController {
         }
     }
 
-    @GetMapping("/{id}/totalamount")
+    @GetMapping("{id}/totalamount")
     public Object getBasketTotalAmount(@PathVariable("id") String id) {
         try {
             double totalAmount = service.getTotalAmountInBasket(id);
@@ -70,7 +70,7 @@ public class BasketController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public Object deleteBasket(@PathVariable("id") String id) {
         try {
             service.removeBasket(id);

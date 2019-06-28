@@ -1,90 +1,130 @@
-# MOVO Backend Challenge
+# Description
 
-## 1. Specifications
+## 1. Backend
 
-Besides providing exceptional transportation services, Cabify also runs a physical store which sells 3 products:
+The project has been developed with the following technologies:
 
-```
-Code         | Name                |  Price
--------------------------------------------------
-VOUCHER      | Cabify Voucher      |   5.00€
-TSHIRT       | Cabify T-Shirt      |  20.00€
-MUG          | Cabify Coffee Mug   |   7.50€
-```
+- Java 8
+- Spring Boot
+- Embedded H2 database
+- Embedded Tomcat
+- Maven
 
-Various departments have insisted on the following discounts:
+To run you'll need the compiled JAR (it can be built using Maven with `mvn clean package`) and simply execute:
 
- * The marketing department thinks a buy 2 get 1 free promotion will work best (buy two of the same product, get one free), and would like this to only apply to `VOUCHER` items.
+    $ java -jar backend-challenge-0.0.1-SNAPSHOT.jar
 
- * The CFO insists that the best way to increase sales is with discounts on bulk purchases (buying x or more of a product, the price of that product is reduced), and requests that if you buy 3 or more `TSHIRT` items, the price per unit should be 19.00€.
+Or alternatively:
 
-This set of rules to apply may change quite frequently in the future.
+    $ mvn spring-boot:run
 
-Your task is to implement a checkout system for this store.
+The server runs at port 8080 by default, but can be configured through `src/main/resources/application.properties`.
 
-The system should have differentiated client and server components that communicate over the network.
+### 1.1. Code design
 
-The server should expose the following independent operations:
+Following the Spring philosofy, the application was designed using the 3-layer architecture ad MVC design pattern.
 
-- Create a new checkout basket
-- Add a product to a basket
-- Get the total amount in a basket
-- Remove the basket
+And talking about concurrency, two aspects can be considered:
 
-The server must support concurrent invocations of those operations: any of them may be invoked at any time, while other operations are still being performed, even for the same basket.
+- The application has an embedded Tomcat, which manages multiple users doing requests concurrenctly
+- The application has an embedded H2 database, so data persistance is ensured in a concurrent way
 
-The client must connect user input with those operations via the protocol exposed by the server.
+Both embedded Tomcat and H2 database could be removed from the application and deploy a WAR to an external Tomcat container or switch to an external DBA in any moment. The code is flexible enough to do those changes painlessly.
 
-We don't have any DBAs at Cabify, so the service shouldn't use any external databases of any kind.
+The code is structured as follows:
 
-**You will need to implement:**
+- Class `Application`: the entray point to the application.
+- Package `com.guillermoorcajo.backendchallenge.pl`: Here goes all the classes related to the exposed endpoints; it's the Presentation Layer (PL).
+- Package `com.guillermoorcajo.backendchallenge.bll`: Here goes all the application business logic, like for example the algorithms wich calculates basket amounts and its discounts; it's the Business Logic Layer (BLL).
+- Package `com.guillermoorcajo.backendchallenge.dal`: Here goes all classes dedicated to access the database; it's the Data Access Layer (DAL).
+- Package `com.guillermoorcajo.backendchallenge.dto`: Here goes all Data Transfer Objects (classes with no methods and all its fields public), which are the objects that both BLL and DAL layers move between each other to intercomunicate.
+- Package `com.guillermoorcajo.backendchallenge.enums`: Here are simply the enums, like ProductCode. 
+- Package `com.guillermoorcajo.backendchallenge.interceptors`: Package to store all classes which will intercept every request and response, for example to log the method/path of an URL and its source IP address. Here can be more classes for authentication in the future.
 
-- A checkout service
-- A checkout client that fulfills these requirements
+Both BLL and DAL exposes interfaces to ensure that the upper layer will know which methods can be used (of course, its classes implements those interfaces). In this way, it's easy to modify the behavior of any business logic or data access details only changing an implementation class, but leaving the rest of the layers as they are.
 
-Examples:
+### 1.3. Database
 
-    Items: VOUCHER, TSHIRT, MUG
-    Total: 32.50€
+I've decided to use an embedded H2 database, a very lightweight DBA written in Java. Also, it has compatibility modes (MySQL, PostgreSQL...) to ensure SQL dialect compatibility in case of a migration to any other DBA. For this test I did not used any specific SQL dialect besides H2.
 
-    Items: VOUCHER, TSHIRT, VOUCHER
-    Total: 25.00€
+The DB is in memory mode, so every time the application is restarted, the data is wiped out and the schema is rebuilt from scratch. It would be easy to change to a file-based mode by a simple configuration line into `src/main/resources/application.properties` like:
 
-    Items: TSHIRT, TSHIRT, TSHIRT, VOUCHER, TSHIRT
-    Total: 81.00€
+    spring.datasource.url=jdbc:h2:/tmp/database.db:backendchallenge;DB_CLOSE_ON_EXIT=FALSE
 
-    Items: VOUCHER, TSHIRT, VOUCHER, VOUCHER, MUG, TSHIRT, TSHIRT
-    Total: 74.50€
+I've created the following schema:
 
-**The code should:**
-- Build and execute in a Unix operating system.
-- Be written as production-ready code. You will write production code.
-- Be easy to grow and easy to add new functionality.
-- Have notes attached, explaining the solution and why certain things are included and others are left out.
-- It must not contain executable or object files. Just source files, documentation and data files are allowed.
+- `baskets`: holds the references (UUIDs) for all the baskets.
+- `products`: holds all the products, with their codes, names and prices.
+- `products_in_baskets`: makes a many-to-many relationship between `baskets` and `products`, allowing baskets to actually contain products, (specifying the quantities too).
+- `pack_discounts`: rules for "buy 2 and get 1 free" discounts.
+- `bulk_discounts`: rules for "buy 3 or more and get a reduced price" discounts.
 
-## 2. Documentation
+Also, it has the view `view_baskets` to query baskets contents easily.
 
-### 2.1. Data persistence
+If anyone (marketing department or the CFO) wants to change prices, product names or discounts, its very easy to make a query to the database to do so (maybe with further development to expose that functionality in an admin section into the webpage).
 
-I've decided to use an in-memory H2 database. Its console can be accessed by the following URL:
+About the baskets:
+- They never expire. To clear old baskets an automated job could use `baskets.last_accessed` to decide which baskets need to ve removed.
+- They are public but identified an UUIDs; not knowing the UUID means it is impossible to access it in practice.
 
-    http://localhost:8080/h2-console
+You can find more about the schema at `src/main/resources.data.sql`.
 
-Login data:
-- *URL*: `jdbc:h2:mem:backendchallenge`
-- *Username*: `backendchallenge`
-- *Password*: (no pasword)
+The database console is disabled by default since this is production code.
 
-It has three tables:
+Note: I've used JdbcTemplate instead of Hibernate to implement the data access object, but that class could be changed at any time to use another one to access the data.
 
-    baskets
-    products_in_baskets
-    products
-  
-### 2.2. Endpoints
+### 1.4. Endpoints
 
-    POST /api/v1/basket/{id}
+The endoints are all under the path `/api/v1/`. In that way, any other endpoint design can coexist with previous versions at the same time. 
+
+The following four endpoints were implemented:
+
+    POST /api/v1/basket
     PUT /api/v1/basket/{id}
     GET /api/v1/basket/{id}/totalamount
     DELETE /api/v1/basket/{id}
+
+Only the second one accepts parameters in its body, a string containing the product code.
+
+Examples with cURL:
+
+    $ curl -X POST http://localhost:8080/api/v1/basket
+    $ curl -X PUT --data 'MUG' http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
+    $ curl -X PUT --data 'TSHIRT' http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
+    $ curl -X GET http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
+    $ curl -X DELETE http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
+  
+### 1.5. Logging
+
+I've used a Java logging library called Logback. The application logs Spring messages, SQL queries, request/responses and debug messages from the business logic layer.
+
+Each log line contains:
+
+- Log level: DEBUG, INFO, WARN, ERROR...
+- Timestamp
+- Hostname (useful if this application has to be inside multiple machines or docker containers)
+- Thread name
+- Class and line (from the source code)
+- Log message
+
+Can be customized by editing `src/main/resources/logback.xml`. The default log level is DEBUG, depending of the environment (preproduction, production...) it could be set to INFO instead of DEBUG.
+  
+### 1.6. Unit tests
+
+I considered that the only unit test this application needed was `com.guillermoorcajo.backendchallenge.unittests.BasketServiceV1Test`.
+
+The tests can be more exhaustive, but for this code challenge I think that's enough. I've used JUnit for the test itself and Mckito to isolate the class under test and mock its dependencies.
+
+## 2. Frontend
+
+The only page is `app.html` (if you run it in localhost, `http://localhost:8080/app.html`).
+
+For the frontend I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
+
+It is completely decoupled from the backend: only static files were used (HTML/CSS/JS) with no template engine or any other server-side manipulation; the communication with the server is done only by AJAX calls. In this way, it's very easy to substitute the frontend with a better one (the frontend team's job? :) ).
+
+Limitations:
+- I've not implemented any sort of session, login or user management. Like real ecommerce webpages, you can fill your basket without being logged in.
+- It has some data hard-coded, like the products. I've focused in the backend.
+
+One possible improvement could be to use React (or another component-based frontend framework).

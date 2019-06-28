@@ -16,7 +16,7 @@ import com.guillermoorcajo.backendchallenge.dto.Product;
 import com.guillermoorcajo.backendchallenge.enums.ProductCode;
 
 @Repository
-public class BasketH2Dao implements BasketDao {
+public class BasketH2JdbcTemplateDao implements BasketDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,7 +25,7 @@ public class BasketH2Dao implements BasketDao {
     public void insertNewBasket(String id)
             throws Exception {
 
-        jdbcTemplate.update("INSERT INTO baskets(uuid) VALUES(?)", id);
+        jdbcTemplate.update("INSERT INTO baskets(uuid, last_accessed) VALUES(?, CURRENT_TIMESTAMP())", id);
     }
 
     @Override
@@ -90,6 +90,9 @@ public class BasketH2Dao implements BasketDao {
 
             jdbcTemplate.update(query, new Object[] { newQuantity, basketId, productCode.toString() });
         }
+        
+        String query = "UPDATE baskets SET last_accessed = CURRENT_TIMESTAMP() WHERE uuid = ?";
+        basketId = jdbcTemplate.update(query, new Object[] { uuid });
     }
 
     @Override
