@@ -120,7 +120,7 @@ The tests can be more exhaustive, but for this code challenge I think that's eno
 
 ## 2. Frontend
 
-I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS, all of that served from the application itself. The only page is `app.html`, if you run the app in localhost at port 8080 the URL would be `http://localhost:8080/app.html`.
+I've used a simple combination of HTML + Bootstrap + CSS + JS, all of that served from the application itself. The only page is `app.html`, if you run the app in localhost at port 8080 the URL would be `http://localhost:8080/app.html`.
 
 It's fully decoupled from the backend: only static files were used (HTML/CSS/JS) with no template engine or any other server-side manipulation; the communication with the server is done only by AJAX calls. In this way, it's very easy to substitute the frontend with a better one (the frontend team's job? :) ).
 

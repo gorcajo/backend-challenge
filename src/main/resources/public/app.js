@@ -1,97 +1,98 @@
 GLOB = {
-	basketId: null,
-	
-	init: function() {
-	    "use strict";
+	basketId : null,
 
-	    $("#btn-empty").on("click", function() {
-	    	GLOB.deleteBasket(GLOB.basketId);
-	    });
+	init : function() {
+		"use strict";
 
-	    $("#btn-add-1").on("click", function() {
-	    	GLOB.addProductToBasket(GLOB.basketId, "VOUCHER");
-	    });
+		document.getElementById("btn-empty").onclick = function() {
+			GLOB.deleteBasket(GLOB.basketId);
+		};
 
-	    $("#btn-add-2").on("click", function() {
-	    	GLOB.addProductToBasket(GLOB.basketId, "TSHIRT");
-	    });
+		document.getElementById("btn-add-1").onclick = function() {
+			GLOB.addProductToBasket(GLOB.basketId, "VOUCHER");
+		};
 
-	    $("#btn-add-3").on("click", function() {
-	    	GLOB.addProductToBasket(GLOB.basketId, "MUG");
-	    });
-	    
-	    GLOB.createNewBasket();
+		document.getElementById("btn-add-2").onclick = function() {
+			GLOB.addProductToBasket(GLOB.basketId, "TSHIRT");
+		};
+
+		document.getElementById("btn-add-3").onclick = function() {
+			GLOB.addProductToBasket(GLOB.basketId, "MUG");
+		};
+
+		GLOB.createNewBasket();
 	},
-	
-	createNewBasket: function() {
-	    $.ajax({
-	        type: "POST",
-	        url: "/api/v1/basket",
-            headers: {
-                "Content-Type": "application/json;charset=UTF-8"
-            },
-	        success: function (response) {
-	        	GLOB.basketId = response;
-	        	$("#total-amount").html("0 €")
-	        },
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR.status);
-	        }
-	    });
+
+	createNewBasket : function() {
+		let ajax = new XMLHttpRequest();
+
+		ajax.open("POST", "/api/v1/basket/", true);
+		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 201) {
+					GLOB.basketId = this.responseText;
+					document.getElementById("total-amount").innerHTML = "0 €";
+				}
+				else {
+					GLOB.createNewBasket();
+				}
+			}
+		};
+
+		ajax.send();
 	},
-	
-	addProductToBasket: function(id, productCode) {
-	    $.ajax({
-	        type: "PUT",
-            url: "/api/v1/basket/" + id,
-            headers: {
-                "Content-Type": "application/json;charset=UTF-8"
-            },
-            data: productCode,
-	        success: function (response) {
-            	GLOB.refreshTotalAmount(id);
-	        },
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR.status);
-	        }
-	    });
+
+	addProductToBasket : function(id, productCode) {
+		let ajax = new XMLHttpRequest();
+
+		ajax.open("PUT", "/api/v1/basket/" + id, true);
+		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 204)
+					GLOB.refreshTotalAmount(id);
+				else
+					GLOB.createNewBasket();
+			}
+		};
+
+		ajax.send(productCode);
 	},
-	
-	refreshTotalAmount: function(id) {
-	    $.ajax({
-	        type: "GET",
-            url: "/api/v1/basket/" + id + "/totalamount",
-            headers: {
-                "Content-Type": "application/json;charset=UTF-8"
-            },
-	        success: function (response) {
-	        	$("#total-amount").html(parseFloat(response).toFixed(2) + " €")
-	        },
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR.status);
-	        }
-	    });
+
+	refreshTotalAmount : function(id) {
+		let ajax = new XMLHttpRequest();
+
+		ajax.open("GET", "/api/v1/basket/" + id + "/totalamount", true);
+		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 200)
+					document.getElementById("total-amount").innerHTML = parseFloat(this.responseText).toFixed(2) + " €";
+				else
+					GLOB.createNewBasket();
+			}
+		};
+
+		ajax.send();
 	},
-	
-	deleteBasket: function(id) {
-        $.ajax({
-            type: "DELETE",
-            url: "/api/v1/basket/" + id,
-            headers: {
-                "Content-Type": "application/json;charset=UTF-8"
-            },
-            dataType: "json",
-            success: function (responseJson) {
-            	GLOB.createNewBasket();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR.status);
-            }
-        });
+
+	deleteBasket : function(id) {
+		let ajax = new XMLHttpRequest();
+
+		ajax.open("DELETE", "/api/v1/basket/" + id, true);
+		ajax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4)
+				GLOB.createNewBasket();
+		};
+
+		ajax.send();
 	},
 };
 
-$(document).ready(function() {
-    "use strict";
-    GLOB.init();
-});
+GLOB.init();
