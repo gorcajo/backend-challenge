@@ -4,33 +4,39 @@
 <configuration>
 	<root level="DEBUG" />
 	<contextName>${HOSTNAME}</contextName>
-    
-    <!-- The only appender -->
-    
-	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>/tmp/backend-challenge.log</File>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/tmp/backend-challenge.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
-		</rollingPolicy>
+
+	<!-- The only appender -->
+
+<!-- 	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
+<!-- 		<File>/tmp/backend-challenge.log</File> -->
+<!-- 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+<!-- 			<fileNamePattern>/tmp/backend-challenge.log.%d{yyyy-MM-dd}.gz</fileNamePattern> -->
+<!-- 		</rollingPolicy> -->
+<!-- 		<encoder> -->
+<!-- 			<pattern>%-5level | %date{ISO8601} | %contextName | %-25thread | -->
+<!-- 				%-30(%class{0}:%line) | %msg%n</pattern> -->
+<!-- 		</encoder> -->
+<!-- 	</appender> -->
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%-5level | %date{ISO8601} | %contextName | %-25thread | %-30(%class{0}:%line) | %msg%n</pattern>
+			<pattern>%-5level | %date{ISO8601} | %-25thread | %-30(%class{0}:%line) | %msg%n</pattern>
 		</encoder>
 	</appender>
-	
-    <!-- Our application log messages -->
 
-	<logger name="com.guillermoorcajo.backendchallenge"
-		level="DEBUG">
-		<appender-ref ref="file" />
+	<!-- Our application log messages -->
+
+	<logger name="com.guillermoorcajo.backendchallenge" level="DEBUG">
+		<appender-ref ref="stdout" />
 	</logger>
-	
-    <!-- The Spring log messages -->
+
+	<!-- The Spring log messages -->
 
 	<logger name="org.springframework" level="WARN">
-		<appender-ref ref="file" />
+		<appender-ref ref="stdout" />
 	</logger>
 
-    <!-- This is for Spring to log SQL queries -->
+	<!-- This is for Spring to log SQL queries -->
 
 	<logger name="org.springframework.jdbc.core.JdbcTemplate">
 		<level value="DEBUG" />
