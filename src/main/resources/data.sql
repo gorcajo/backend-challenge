@@ -65,9 +65,9 @@ LEFT JOIN products
 INSERT INTO
 	products(code, name, price_in_cents)
 VALUES
-	('VOUCHER', 'Cabify Voucher', 500),
-	('TSHIRT', 'Cabify T-Shirt', 2000),
-	('MUG', 'Cabify Coffee Mug', 750);
+    ('VOUCHER', 'Cabify Voucher', 500),
+    ('TSHIRT', 'Cabify T-Shirt', 2000),
+    ('MUG', 'Cabify Coffee Mug', 750);
 	
 INSERT INTO
     pack_discounts(product_id, items_bought, free_items)
