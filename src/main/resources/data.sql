@@ -4,8 +4,8 @@ CREATE TABLE baskets (
     id INTEGER NOT NULL AUTO_INCREMENT,
     uuid UUID NOT NULL,
     last_accessed TIMESTAMP NOT NULL,
-	PRIMARY KEY (id),
-	UNIQUE KEY (uuid)
+    PRIMARY KEY (id),
+    UNIQUE KEY (uuid)
 );
 
 CREATE TABLE products (
@@ -18,11 +18,11 @@ CREATE TABLE products (
 );
 
 CREATE TABLE products_in_baskets (
-	id INTEGER NOT NULL AUTO_INCREMENT,
+    id INTEGER NOT NULL AUTO_INCREMENT,
     basket_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
-	PRIMARY KEY (id),
+    PRIMARY KEY (id),
     FOREIGN KEY (basket_id) REFERENCES baskets(id),
     FOREIGN KEY (product_id) REFERENCES products(id),
     UNIQUE KEY (basket_id, product_id)
@@ -52,7 +52,6 @@ CREATE VIEW view_baskets AS SELECT
     baskets.uuid,
     products.code,
     products.name,
-    products.price_in_cents,
     products_in_baskets.quantity
 FROM
     products_in_baskets
