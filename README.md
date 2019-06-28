@@ -20,6 +20,8 @@ Or alternatively:
 
 The server runs at port 8080 by default, but can be configured through `src/main/resources/application.properties`.
 
+It serves all the static frontend files (see section 2).
+
 ### 1.1. Code design
 
 Following the Spring philosofy, the application was designed using the 3-layer architecture ad MVC design pattern.
@@ -119,7 +121,7 @@ The tests can be more exhaustive, but for this code challenge I think that's eno
 
 The frontend is served from the application itself, and the only page is `app.html`. If you run the app it in localhost at the port 8080 the URL would be `http://localhost:8080/app.html`.
 
-For the frontend I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
+I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
 
 It is completely decoupled from the backend: only static files were used (HTML/CSS/JS) with no template engine or any other server-side manipulation; the communication with the server is done only by AJAX calls. In this way, it's very easy to substitute the frontend with a better one (the frontend team's job? :) ).
 
