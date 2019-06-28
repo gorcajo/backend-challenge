@@ -8,7 +8,7 @@ The project has been developed with the following technologies:
 - Spring Boot
 - Embedded H2 database
 - Embedded Tomcat
-- Maven (needed in your system if you'll compile it, alongside with the JDK)
+- Maven (needed in your system if you're going to compile it, alongside with the JDK)
 
 To run you'll need the compiled JAR (it can be built using Maven with `mvn clean package`) and simply execute:
 
@@ -110,7 +110,7 @@ Each log line contains:
 - Class and line (from the source code)
 - Log message
 
-By default it logs to a time-based rolling file, `/tmp/backend-challenge.log`. The default log level is DEBUG, depending of the environment (preproduction, production...) it could be set to INFO instead of DEBUG. The logging configuration is done by editing `src/main/resources/logback.xml`.
+By default it logs to a time-based rolling file, `/tmp/backend-challenge.log`, with log level at DEBUG. The logging configuration can be edited in `src/main/resources/logback.xml`.
   
 ### 1.6. Unit tests
 
