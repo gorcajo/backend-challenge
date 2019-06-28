@@ -79,18 +79,18 @@ The endoints are all under the path `/api/v1/`. In that way, any other endpoint 
 
 The following four endpoints were implemented:
 
-    POST /api/v1/basket
-    PUT /api/v1/basket/{id}
-    GET /api/v1/basket/{id}/totalamount
-    DELETE /api/v1/basket/{id}
-
-Only the second one accepts parameters in its body, a string containing the product code.
+    Method | Path                             | Request body              | OK Response
+    --------------------------------------------------------------------------------------------------------
+    POST   | /api/v1/basket                   |                           | HTTP 201, with the basket ID
+    PUT    | /api/v1/basket/{id}              | String (the product code) | HTTP 204
+    GET    | /api/v1/basket/{id}/totalamount  |                           | HTTP 200, with the basket amount
+    DELETE | /api/v1/basket/{id}              |                           | HTTP 204
 
 Examples with cURL:
 
     $ curl -X POST http://localhost:8080/api/v1/basket
-    $ curl -X PUT --data 'MUG' http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
-    $ curl -X PUT --data 'TSHIRT' http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
+    $ curl -X PUT --data '"MUG"' http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
+    $ curl -X PUT --data '"TSHIRT"' http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
     $ curl -X GET http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
     $ curl -X DELETE http://localhost:8080/api/v1/basket/24d44b96-999b-11e9-b15f-6fd920f6144f
   
