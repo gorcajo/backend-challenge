@@ -20,6 +20,8 @@ Or alternatively:
 
 The server runs at port 8080 by default, but can be configured through `src/main/resources/application.properties`.
 
+It serves all the static frontend files (see section 2).
+
 ### 1.1. Code design
 
 Following the Spring philosofy, the application was designed using the 3-layer architecture ad MVC design pattern.
@@ -64,18 +66,19 @@ Also, it has the view `view_baskets` to query baskets contents easily.
 If anyone (marketing department or the CFO) wants to change prices, product names or discounts, its very easy to make a query to the database to do so (maybe with further development to expose that at an admin section into the site).
 
 About the baskets:
+
 - They never expire. To remove old and abandoned baskets an automated job could use `baskets.last_accessed` to decide which baskets need to be removed.
 - They are public but identified by unique UUIDs; not knowing the UUID means it is impossible to access it in practice.
 
-You can find more about the schema at `src/main/resources.data.sql`.
+Notes:
 
-The database console is disabled by default since this is production code.
-
-Note: I've used JdbcTemplate instead of Hibernate to implement the data access object, but that class could be changed at any time to use another one to access the data.
+- I've used JdbcTemplate instead of Hibernate to implement the data access object, but that class could be changed at any time to use another one to access the data.
+- You can find more about the schema at `src/main/resources/data.sql`.
+- The database console is disabled by default since this is production code.
 
 ### 1.4. Endpoints
 
-The endoints are all under the path `/api/v1/`. In that way, any other endpoint design can coexist with previous versions at the same time. 
+All ndoints are in the form `/api/v1/*`, so any other endpoint design can coexist with previous versions at the same time. 
 
 The following four endpoints were implemented:
 
@@ -117,14 +120,14 @@ The tests can be more exhaustive, but for this code challenge I think that's eno
 
 ## 2. Frontend
 
-The only page is `app.html` (if you run it in localhost, `http://localhost:8080/app.html`).
+The frontend is served from the application itself, and the only page is `app.html`. If you run the app it in localhost at the port 8080 the URL would be `http://localhost:8080/app.html`.
 
-For the frontend I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
+I've used a simple combination of HTML + Bootstrap + jQuery + CSS + JS.
 
 It is completely decoupled from the backend: only static files were used (HTML/CSS/JS) with no template engine or any other server-side manipulation; the communication with the server is done only by AJAX calls. In this way, it's very easy to substitute the frontend with a better one (the frontend team's job? :) ).
 
 Limitations:
 - I've not implemented any sort of session, login or user management. Like real ecommerce webpages, you can fill your basket without being logged in.
-- It has some data hard-coded, like the products. I've focused in the backend functionalities asked, and retrieve the products from the server to show them into the frontend requires another endpoint.
+- It has some data hard-coded, like the products. I've focused in the backend functionalities asked (retrieve the products from the server would require another endpoint).
 
 One possible improvement could be to use React (or another component-based frontend framework).
