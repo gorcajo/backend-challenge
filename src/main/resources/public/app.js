@@ -115,6 +115,7 @@ class ProductsArea extends React.Component {
                                 	onProductAdd={this.props.onProductAdd}
                                 />
                             </div>
+                                
                             <div className='col-md-4'>
                             	<Product
 	                            	code={"TSHIRT"}
@@ -123,6 +124,7 @@ class ProductsArea extends React.Component {
 	                            	onProductAdd={this.props.onProductAdd}
                             	/>
                             </div>
+                            	
                             <div className='col-md-4'>
                         		<Product
 	                        		code={"MUG"}
