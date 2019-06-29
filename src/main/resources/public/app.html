@@ -1,89 +1,23 @@
 <!DOCTYPE html>
+
 <html>
-
-<head>
-    <title>Backend Challenge</title>
-
-    <meta charset='utf-8'></meta>
-    
-    <link rel='stylesheet' href='lib/bootstrap.min.css'></link>
-    <link rel='stylesheet' href='app.css'></link>
-</head>
-
-<body>
-<div class='container-fluid'>
-
-    <div class='row'>
-        <div class='col-md-12'>
-            <div class='header'>
-                <h1>Backend Challenge</h1>
-                <h4><i>Guillermo Orcajo García</i></h4>
-            </div>
-        </div>
-    </div>
-
-    <div class='row'>
-        <div class='col-md-8'>
-            <div class='card'>
-                <div class='card-header bg-primary text-white section-header'>Products</div>
-                
-                <div class='card-body'>
-                    <div class='row'>
-                        <div class='col-md-4'>
-                            <div class='card'>
-                                <div class='card-header product-header'>Cabify Voucher</div>
-                                <div class='card-body'>
-                                    <p class='product-amount'>5.00 €</p>
-                                  <button id='btn-add-1' type='button' class='btn btn-success btn-block'>Add to basket</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='col-md-4'>
-                            <div class='card'>
-                                <div class='card-header product-header'>Cabify T-Shirt</div>
-                                <div class='card-body'>
-                                    <p class='product-amount'>20.00 €</p>
-                                    <button id='btn-add-2' type='button' class='btn btn-success btn-block'>Add to basket</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='col-md-4'>
-                            <div class='card'>
-                                <div class='card-header product-header'>Cabify Coffee Mug</div>
-                                <div class='card-body'>
-                                    <p class='product-amount'>7.50 €</p>
-                                    <button id='btn-add-3' type='button' class='btn btn-success btn-block'>Add to basket</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class='col-md-3 offset-md-1'>
-            <div class='card'>
-                <div class='card-header bg-primary text-white section-header'>Basket</div>
-                
-                <div class='card-body'>
-                    <div class='row'>
-                        <div class='col-md-12'>
-                            <p id='total-amount' class='basket-amount'>0 €</p>
-                        </div>
-                    </div>
-                    
-                    <div class='row'>
-                        <div class='col-md-12'>
-                            <button id='btn-empty' type='button' class='btn btn-danger btn-block'>Empty basket</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script src='app.js'></script>
-</body>
+	<head>
+	    <title>Backend Challenge</title>
+	
+	    <meta charset='utf-8'></meta>
+	    
+	    <link rel='stylesheet' href='lib/bootstrap.min.css'></link>
+	    <link rel='stylesheet' href='app.css'></link>
+	</head>
+	
+	<body>
+		<div class='container-fluid'>
+		    <div id='react-root'></div>
+		</div>
+		
+		<script type='text/javascript' src="lib/babel.min.js"></script> <!-- Para poder parsear JSX -->
+		<script type='text/javascript' src='lib/react.development.js'></script> <!-- React -->
+		<script type='text/javascript' src='lib/react-dom.development.js'></script> <!-- React DOM -->
+		<script type='text/babel' src='app.js'></script> <!-- Tu código JSX, ojo al type -->
+	</body>
 </html>
