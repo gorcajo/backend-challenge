@@ -28,6 +28,7 @@ class Application extends React.Component {
 		.then(response => response.text())
 		.then((data) => {
 			this.setState({basketId: data})
+			this.refreshTotalAmount();
 		});
 	}
 
@@ -150,22 +151,17 @@ class Product extends React.Component {
                 <div className='card-header product-header'>{name}</div>
                 <div className='card-body'>
                     <p className='product-amount'>{price} €</p>
-                    <AddToBasketButton onClick={() => this.props.onProductAdd(code) } />
+
+                    <button
+                    	type='button'
+                		className='btn btn-success btn-block'
+            			onClick={() => this.props.onProductAdd(code) }>
+                    		Add to basket
+                    </button>
                 </div>
             </div>
         );
     }
-}
-
-class AddToBasketButton extends React.Component {
-	
-	render() {
-		return (
-            <button type='button' className='btn btn-success btn-block' onClick={this.props.onClick}>
-            	Add to basket
-            </button>
-		);
-	}
 }
 
 class Basket extends React.Component {
@@ -187,7 +183,12 @@ class Basket extends React.Component {
                         
                         <div className='row'>
                             <div className='col-md-12'>
-                            	<DeleteBasketButton onClick={this.props.onBasketDelete} />
+	                            <button
+	                            	type='button'
+                            		className='btn btn-danger btn-block'
+                        			onClick={this.props.onBasketDelete}>
+		                        		Empty basket
+		                        </button>
                             </div>
                         </div>
                     </div>
@@ -195,17 +196,6 @@ class Basket extends React.Component {
             </div>
         );
     }
-}
-
-class DeleteBasketButton extends React.Component {
-	
-	render() {
-		return (
-            <button type='button' className='btn btn-danger btn-block' onClick={this.props.onClick}>
-            	Empty basket
-            </button>
-		);
-	}
 }
 
 // ========================================
