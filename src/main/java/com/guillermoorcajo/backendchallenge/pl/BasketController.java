@@ -1,5 +1,7 @@
 package com.guillermoorcajo.backendchallenge.pl;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,16 @@ public class BasketController {
     @PutMapping("{id}")
     public Object addProductsToBasket(@PathVariable("id") String id, @RequestBody String requestBody) {
         try {
-            ProductCode productCode = ProductCode.valueOf(requestBody);
+            ProductCode productCode;
+            
+            try {
+                UUID.fromString(id);
+                productCode = ProductCode.valueOf(requestBody);
+            }
+            catch (IllegalArgumentException iae) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            
             service.addProductToBasket(id, productCode);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
@@ -58,6 +69,13 @@ public class BasketController {
     @GetMapping("{id}/totalamount")
     public Object getBasketTotalAmount(@PathVariable("id") String id) {
         try {
+            try {
+                UUID.fromString(id);
+            }
+            catch (IllegalArgumentException iae) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            
             double totalAmount = service.getTotalAmountInBasket(id);
             return ResponseEntity.status(HttpStatus.OK).body(totalAmount);
         }
@@ -73,6 +91,13 @@ public class BasketController {
     @DeleteMapping("{id}")
     public Object deleteBasket(@PathVariable("id") String id) {
         try {
+            try {
+                UUID.fromString(id);
+            }
+            catch (IllegalArgumentException iae) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            
             service.removeBasket(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
