@@ -72,10 +72,6 @@ class Application extends React.Component {
 		});
 	}
 	
-	renderBasket(totalAmount) {
-		return <Basket onBasketDelete={this.deleteBasket} totalAmount={this.state.totalAmount}/>;
-	}
-	
 	render() {
 		return (
 		    <div>
@@ -90,7 +86,7 @@ class Application extends React.Component {
 				
 			    <div className='row'>
 			        <ProductsArea onProductAdd={this.addProductToBasket} />
-			        {this.renderBasket()}
+			        <Basket onBasketDelete={this.deleteBasket} totalAmount={this.state.totalAmount}/>;
 			    </div>
 		    </div>
 		);
