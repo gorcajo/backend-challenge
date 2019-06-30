@@ -86,7 +86,7 @@ class Application extends React.Component {
 				
 			    <div className='row'>
 			        <ProductsArea onProductAdd={this.addProductToBasket} />
-			        <Basket onBasketDelete={this.deleteBasket} totalAmount={this.state.totalAmount}/>;
+			        <Basket onBasketDelete={this.deleteBasket} totalAmount={this.state.totalAmount}/>
 			    </div>
 		    </div>
 		);
